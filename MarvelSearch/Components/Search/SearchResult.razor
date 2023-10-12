@@ -59,7 +59,7 @@
         {
             Db.Favourite.Add(new Favourite
             {
-                UserId = userId.Value,
+                UserId = userId,
                 MarvelId = Result.Id,
                 CharacterName = Result.Name
             });
@@ -69,15 +69,14 @@
         await Db.SaveChangesAsync();
     }
 
-    private async Task<Guid?> GetUserId()
+    private async Task<string?> GetUserId()
     {
         if (authenticationState == null) return null;
         var auth = await authenticationState;
-        var id = auth.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        return id == null ? null : Guid.Parse(id);
+       return auth.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
     
-    private async Task<Favourite?> LookupFavourite(Guid? userNameIdentifier)
+    private async Task<Favourite?> LookupFavourite(string? userNameIdentifier)
     {
         if (userNameIdentifier == null)
             return null;

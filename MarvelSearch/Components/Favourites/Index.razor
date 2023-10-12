@@ -1,10 +1,19 @@
 ﻿@page "/Favourites"
 @using MarvelSearch.Data
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Db
 
 @inject ApplicationDbContext DbContext
 
-<QuickGrid Items="@DbContext.Favourite">
+<form method="post" @formname="clearFavourites" data-enhance @onsubmit="Clear">
+    <textarea name="ClearReason" class="form-control" placeholder="Why do you want to clear the data?" required></textarea>
+    <button type="submit" class="btn btn-danger mb-4">Clear</button>
+    <AntiforgeryToken/>
+</form>
+
+<QuickGrid Items="@DbContext.Favourite" @ref="favouritesGrid">
     <PropertyColumn Property="@(p => p.CharacterName)"/>
     <TemplateColumn Title="MarvelId">
         <a href="/details/@context.MarvelId">@context.MarvelId</a>
@@ -12,5 +21,30 @@
 </QuickGrid>
 
 @code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    QuickGrid<Favourite> favouritesGrid;
+    
+    [SupplyParameterFromForm]
+    public string ClearReason { get; set; }
+
+    private async Task Clear()
+    {
+        var userId = await GetUserId();
+        await Db.Database.ExecuteSqlRawAsync("delete from Favourite where UserId={0}", userId);
+        await favouritesGrid.RefreshDataAsync();
+        
+        Console.WriteLine("User deleted lots of data! Reason given: " + ClearReason);
+    }
+
+    private async Task<string?> GetUserId()
+    {
+        if (authenticationState == null) return null;
+        var auth = await authenticationState;
+        var id = auth.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return id;
+    }
 
 }

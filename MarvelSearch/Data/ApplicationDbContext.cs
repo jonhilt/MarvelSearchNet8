@@ -12,7 +12,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 public class Favourite
 {
     public int Id { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public int MarvelId { get; set; }
     public string CharacterName { get; set; }
 }
