@@ -6,7 +6,7 @@
 <PageTitle>Home</PageTitle>
 
 <form method="GET" class="text-center mb-4">
-    <InputText @bind-Value="SearchTerm" class="form-control" />
+    <InputText @bind-Value="SearchTerm" class="form-control"/>
     <button type="submit" class="btn btn-primary mt-2">Search Characters</button>
 </form>
 
@@ -25,13 +25,8 @@
         @foreach (var result in _results.Data.Results)
         {
             <div class="col">
-                <div class="card">
-                    <img src="@result.Thumbnail.FullPath" class="card-img-top " alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">@result.Name</h5>
-                        <p class="card-text">@result.Description</p>
-                    </div>
-                </div>
+                <SearchResult Result="result" 
+                              @rendermode="@RenderMode.InteractiveServer"/>
             </div>
         }
     }
@@ -42,8 +37,8 @@
     private MarvelSearchResult? _results;
 
     [SupplyParameterFromQuery]
-    public string SearchTerm{ get; set; }
-    
+    public string SearchTerm { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         _results = await MarvelApi.Search(SearchTerm);

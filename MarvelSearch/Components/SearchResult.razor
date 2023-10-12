@@ -1,0 +1,89 @@
+﻿@using MarvelSearch.Backend
+@using MarvelSearch.Data
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@inject ApplicationDbContext Db
+
+<div class="card">
+    <img src="@Result.Thumbnail.FullPath" class="card-img-top " alt="...">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <h5 class="card-title">@Result.Name</h5>
+
+            <AuthorizeView>
+                <Authorized>
+                   @if (_isFavourite)
+                   {
+                       <img src="icons/heart-filled.svg" style="height:25px; width: 25px;" class="btn-outline-light" @onclick="Like"/>
+                   }
+                   else
+                   {
+                       <img src="icons/heart-outline.svg" style="height:25px; width: 25px;" class="btn-outline-light" @onclick="Like"/>
+                   }
+                </Authorized>
+            </AuthorizeView>
+
+        </div>
+        <p class="card-text">@Result.Description</p>
+    </div>
+</div>
+
+@code {
+    private bool _isFavourite;  
+
+    [Parameter]
+    public MarvelSearchResult.Result Result { get; set; }
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var id = await GetUserId();
+        _isFavourite = await LookupFavourite(id) != null;
+    }
+
+    private async Task Like()
+    {
+        var userId = await GetUserId();
+        if (userId == null)
+            return;
+        
+        var existing = await LookupFavourite(userId);
+        if (existing != null)
+        {
+            Db.Favourite.Remove(existing);
+            _isFavourite = false;
+        }
+        else
+        {
+            Db.Favourite.Add(new Favourite
+            {
+                UserId = userId.Value,
+                MarvelId = Result.Id,
+                CharacterName = Result.Name
+            });
+            _isFavourite = true;
+        }
+
+        await Db.SaveChangesAsync();
+    }
+
+    private async Task<Guid?> GetUserId()
+    {
+        if (authenticationState == null) return null;
+        var auth = await authenticationState;
+        var id = auth.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return id == null ? null : Guid.Parse(id);
+    }
+    
+    private async Task<Favourite?> LookupFavourite(Guid? userNameIdentifier)
+    {
+        if (userNameIdentifier == null)
+            return null;
+
+        return await Db.Favourite
+            .SingleOrDefaultAsync(x => x.MarvelId == Result.Id && x.UserId == userNameIdentifier);
+    }
+
+}
