@@ -18,7 +18,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped(sp => new HttpClient { 
     BaseAddress = new Uri("https://gateway.marvel.com:443/v1/public/") 
 });
+
 builder.Services.AddScoped<MarvelApi>();
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<UserAccessor>();

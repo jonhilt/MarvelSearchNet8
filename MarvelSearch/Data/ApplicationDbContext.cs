@@ -6,9 +6,7 @@ namespace MarvelSearch.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
-    
     public DbSet<Favourite> Favourite { get; set; }
-    
 }
 
 public class Favourite

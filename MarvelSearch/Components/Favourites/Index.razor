@@ -1,0 +1,16 @@
+﻿@page "/Favourites"
+@using MarvelSearch.Data
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject ApplicationDbContext DbContext
+
+<QuickGrid Items="@DbContext.Favourite">
+    <PropertyColumn Property="@(p => p.CharacterName)"/>
+    <TemplateColumn Title="MarvelId">
+        <a href="/details/@context.MarvelId">@context.MarvelId</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+
+}
