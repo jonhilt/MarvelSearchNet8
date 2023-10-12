@@ -1,18 +1,40 @@
 ﻿@page "/"
+@using MarvelSearch.Backend
+@inject MarvelApi MarvelApi
+@attribute [StreamRendering]
 
 <PageTitle>Home</PageTitle>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-  
-  <div class="col">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3BpZGVybWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=700&q=60" class="card-img-top " alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      </div>
-    </div>
-  </div>
-  
-  
+
+    @if (_results == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var result in _results.Data.Results)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="@result.Thumbnail.FullPath" class="card-img-top " alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@result.Name</h5>
+                        <p class="card-text">@result.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
 </div>
+
+@code {
+    private MarvelSearchResult? _results;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _results = await MarvelApi.Search("spider");
+    }
+
+}
