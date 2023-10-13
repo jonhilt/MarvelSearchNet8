@@ -2,23 +2,28 @@
 @using MarvelSearch.Data
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext Db
-
 @inject ApplicationDbContext DbContext
+@attribute [Authorize]
 
-<form method="post" @formname="clearFavourites" data-enhance @onsubmit="Clear">
-    <textarea name="ClearReason" class="form-control" placeholder="Why do you want to clear the data?" required></textarea>
-    <button type="submit" class="btn btn-danger mb-4">Clear</button>
-    <AntiforgeryToken/>
-</form>
+<AuthorizeView>
 
-<QuickGrid Items="@DbContext.Favourite" @ref="favouritesGrid">
-    <PropertyColumn Property="@(p => p.CharacterName)"/>
-    <TemplateColumn Title="MarvelId">
-        <a href="/details/@context.MarvelId">@context.MarvelId</a>
-    </TemplateColumn>
-</QuickGrid>
+    <QuickGrid Items="@DbContext.Favourite.Where(x => x.UserId == context.User.FindFirstValue(ClaimTypes.NameIdentifier))"
+               @ref="favouritesGrid" class="table table-bordered table-striped">
+        <PropertyColumn Property="@(p => p.CharacterName)" class="p-2" Title="Name"/>
+        <PropertyColumn Property="@(p => p.MarvelId)" class="p-2" Title="Marvel Id"/>
+    </QuickGrid>
+
+    <form method="post" @formname="clearFavourites" data-enhance @onsubmit="Clear" class="border rounded p-3 mb-4">
+        <h4>Reset Favourites</h4>
+        <button type="submit" class="btn btn-danger my-2">Reset</button>
+        <AntiforgeryToken/>
+    </form>
+
+</AuthorizeView>
+
 
 @code {
 
@@ -26,17 +31,12 @@
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     QuickGrid<Favourite> favouritesGrid;
-    
-    [SupplyParameterFromForm]
-    public string ClearReason { get; set; }
 
     private async Task Clear()
     {
         var userId = await GetUserId();
         await Db.Database.ExecuteSqlRawAsync("delete from Favourite where UserId={0}", userId);
         await favouritesGrid.RefreshDataAsync();
-        
-        Console.WriteLine("User deleted lots of data! Reason given: " + ClearReason);
     }
 
     private async Task<string?> GetUserId()

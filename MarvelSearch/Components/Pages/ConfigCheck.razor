@@ -1,0 +1,33 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
+    var apiKey = Configuration.GetValue<string>("MarvelAPIKey");
+    var privateApiKey = Configuration.GetValue<string>("MarvelAPIPrivateKey");
+}
+
+@if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(privateApiKey))
+{
+    <div class="border shadow p-4 bg-info bg-opacity-25">
+        <p>To continue you'll need to head over to <span class="font-bold">wwwroot</span> and add an <span class="font-bold">appsettings.json</span> file as follows</p>
+        <pre class="text-left bg-gray-600 mt-4">
+<code>
+    {
+        "MarvelAPIKey": "Your Key Here",
+        "MarvelAPIPrivateKey": "Your Private Key Here"
+    }
+</code>
+        </pre>
+    </div>
+}
+else
+{
+    @ConfigDetected
+}
+
+@code {
+
+    [Parameter]
+    public RenderFragment ConfigDetected { get; set; }
+
+}

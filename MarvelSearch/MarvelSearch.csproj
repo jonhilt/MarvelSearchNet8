@@ -24,4 +24,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-rc.2.23480.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Search\Index.razor" />
+    <_ContentIncludedByDefault Remove="Components\Search\SearchResult.razor" />
+    <_ContentIncludedByDefault Remove="Components\Favourites\Index.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Favourites\Index.razor" />
+  </ItemGroup>
+
 </Project>
