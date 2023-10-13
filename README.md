@@ -17,4 +17,6 @@ You'll then be able to grab your public and private keys, and also check your si
 
 ![Screenshot 2023-10-13 155956](https://github.com/jonhilt/MarvelSearchNet8/assets/102787/f91492e1-b6e9-44ba-bbd9-c003eed1cc4b)
 
-Once you've added your API keys to `appsettings.Development.json`, restart the app and you'll see this:
+Once you've added your API keys to `appsettings.Development.json`, restart the app, and head to the search page to start searching for Marvel characters.
+
+![image](https://github.com/jonhilt/MarvelSearchNet8/assets/102787/a916e2de-4fd7-40fd-bf57-d855237a0e29)
