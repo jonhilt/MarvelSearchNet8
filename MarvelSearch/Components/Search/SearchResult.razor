@@ -4,12 +4,11 @@
 @using System.Security.Claims
 @inject ApplicationDbContext Db
 
-<div class="card">
-    <img src="@Result.Thumbnail.FullPath" class="card-img-top " alt="...">
-    <div class="card-body">
-        <div class="d-flex justify-content-between">
-            <h5 class="card-title">@Result.Name</h5>
-
+<div class="p-6 border border-gray-300 rounded-md">
+    <img src="@Result.Thumbnail.FullPath" alt="..." class="h-80 object-cover mx-auto">
+    <div class="mt-4">
+        <div class="flex justify-content-between">
+            <h5 class="text-xl font-medium my-2">@Result.Name</h5>
             <AuthorizeView>
                 <Authorized>
                    @if (_isFavourite)
@@ -24,7 +23,7 @@
             </AuthorizeView>
 
         </div>
-        <p class="card-text">@Result.Description</p>
+        <p class="leading-8">@Result.Description</p>
     </div>
 </div>
 

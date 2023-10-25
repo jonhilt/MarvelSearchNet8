@@ -1,8 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿namespace MarvelSearch.Backend;
+
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-
-namespace MarvelSearch.Backend;
 
 public class MarvelApi
 {

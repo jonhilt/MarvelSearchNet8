@@ -5,12 +5,12 @@
 
 <PageTitle>Home</PageTitle>
 
-<form method="GET" class="text-center mb-4">
-    <InputText @bind-Value="SearchTerm" class="form-control"/>
-    <button type="submit" class="btn btn-primary mt-2">Search Characters</button>
+<form method="GET" class="text-center mb-4 p-4">
+    <InputText @bind-Value="SearchTerm" class="p-2 rounded-md block w-2/3 mx-auto border border-gray-300"/>
+    <button type="submit" class="mt-2 p-2 bg-indigo-400 text-white rounded-md font-semibold">Search Characters</button>
 </form>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+<div class="grid grid-cols-4 gap-6">
 
     @if (string.IsNullOrEmpty(SearchTerm))
     {
@@ -24,9 +24,7 @@
     {
         @foreach (var result in _results.Data.Results)
         {
-            <div class="col">
-                <SearchResult Result="result" @rendermode="@RenderMode.InteractiveServer"/>
-            </div>
+            <SearchResult Result="result" @rendermode="@RenderMode.InteractiveServer"/>
         }
     }
 
