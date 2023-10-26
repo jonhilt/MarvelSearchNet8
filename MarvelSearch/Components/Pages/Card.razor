@@ -1,0 +1,27 @@
+﻿<div class="p-6 border border-gray-300 rounded-md">
+    @if (!string.IsNullOrEmpty(ImageUrl))
+    {
+        <img src="@ImageUrl" alt="..." class="h-80 object-cover mx-auto">
+    }
+    <div class="mt-4">
+        <div>
+            @Header
+        </div>
+        <div>
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment Header { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string ImageUrl { get; set; }
+
+}
