@@ -3,14 +3,14 @@
 
 @{
     var apiKey = Configuration.GetValue<string>("MarvelAPIKey");
-    var privateApiKey = Configuration.GetValue<string>("MarvelAPIPrivateKey");
+    var privateApiKey = Configuration.GetValue<string>("MarvelAPIPrivateKey1");
 }
 
 @if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(privateApiKey))
 {
-    <div class="border shadow p-4 bg-info bg-opacity-25">
+    <div class="border shadow p-4 bg-indigo-500 text-white max-w-5xl mx-auto mt-4">
         <p>To continue you'll need to head over to <span class="font-bold">appsettings.Development.json</span> and add configuration values for your Marvel keys as follows:</p>
-        <pre class="text-left bg-gray-600 mt-4">
+        <pre class="text-left bg-gray-600 m-4 pb-4">
 <code>
     {
         "MarvelAPIKey": "Your Key Here",
