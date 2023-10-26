@@ -24,7 +24,7 @@
     {
         @foreach (var result in apiResponse.Results.ToList())
         {
-            <SearchResult Result="@result" @rendermode="@RenderMode.InteractiveServer"/>
+            <SearchResult Result="result" @rendermode="@RenderMode.InteractiveServer"/>
         }
     }
 
