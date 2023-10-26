@@ -1,45 +1,52 @@
-﻿@using MarvelSearch.Backend
-@using MarvelSearch.Data
+﻿@using MarvelSearch.Data
 @using Microsoft.EntityFrameworkCore
 @using System.Security.Claims
+@using FluentMarvelSdk
+
 @inject ApplicationDbContext Db
 
-<div class="p-6 border border-gray-300 rounded-md">
-    <img src="@Result.Thumbnail.FullPath" alt="..." class="h-80 object-cover mx-auto">
-    <div class="mt-4">
-        <div class="flex justify-content-between">
-            <h5 class="text-xl font-medium my-2">@Result.Name</h5>
-            <AuthorizeView>
-                <Authorized>
-                   @if (_isFavourite)
-                   {
-                       <img src="icons/heart-filled.svg" style="height:25px; width: 25px;" class="btn-outline-light" @onclick="Like"/>
-                   }
-                   else
-                   {
-                       <img src="icons/heart-outline.svg" style="height:25px; width: 25px;" class="btn-outline-light" @onclick="Like"/>
-                   }
-                </Authorized>
-            </AuthorizeView>
-
+@if (Result != null)
+{
+    <a href="/character/@Result.Id">
+        <div class="p-6 border border-gray-300 rounded-md">
+            <img src="@(Result.Thumbnail.Path + "." + Result.Thumbnail.Extension)" alt="..." class="h-80 object-cover mx-auto">
+            <div class="mt-4">
+                <div class="flex justify-content-between">
+                    <h5 class="text-xl font-medium my-2">@Result.Name</h5>
+                    <AuthorizeView>
+                        <Authorized>
+                            @if (_isFavourite)
+                            {
+                                <img src="icons/heart-filled.svg" style="height:25px; width: 25px;" class="btn-outline-light" @onclick="Like"/>
+                            }
+                            else
+                            {
+                                <img src="icons/heart-outline.svg" style="height:25px; width: 25px;" class="btn-outline-light" @onclick="Like"/>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
+    
+                </div>
+                <p class="leading-8">@Result.Description</p>
+            </div>
         </div>
-        <p class="leading-8">@Result.Description</p>
-    </div>
-</div>
+    </a>
+}
+
 
 @code {
-    private bool _isFavourite;  
+    private bool _isFavourite;
 
     [Parameter]
-    public MarvelSearchResult.Result Result { get; set; }
+    public Character? Result { get; set; }
 
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var id = await GetUserId();
-        _isFavourite = await LookupFavourite(id) != null;
+        // var id = await GetUserId();
+        // _isFavourite = await LookupFavourite(id) != null;
     }
 
     private async Task Like()
@@ -47,7 +54,7 @@
         var userId = await GetUserId();
         if (userId == null)
             return;
-        
+
         var existing = await LookupFavourite(userId);
         if (existing != null)
         {
@@ -59,7 +66,7 @@
             Db.Favourite.Add(new Favourite
             {
                 UserId = userId,
-                MarvelId = Result.Id,
+                MarvelId = Result.Id.GetValueOrDefault(),
                 CharacterName = Result.Name
             });
             _isFavourite = true;
@@ -74,7 +81,7 @@
         var auth = await authenticationState;
        return auth.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
-    
+
     private async Task<Favourite?> LookupFavourite(string? userNameIdentifier)
     {
         if (userNameIdentifier == null)

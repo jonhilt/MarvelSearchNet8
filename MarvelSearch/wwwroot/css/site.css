@@ -691,22 +691,6 @@ video {
   font-weight: 600;
 }
 
-.leading-loose {
-  line-height: 2;
-}
-
-.leading-normal {
-  line-height: 1.5;
-}
-
-.leading-5 {
-  line-height: 1.25rem;
-}
-
-.leading-10 {
-  line-height: 2.5rem;
-}
-
 .leading-8 {
   line-height: 2rem;
 }
@@ -714,6 +698,11 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
 .shadow {

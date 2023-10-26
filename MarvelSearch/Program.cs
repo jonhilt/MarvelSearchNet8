@@ -1,4 +1,4 @@
-using MarvelSearch.Backend;
+using FluentMarvelSdk;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -20,7 +20,16 @@ builder.Services.AddScoped(sp => new HttpClient {
     BaseAddress = new Uri("https://gateway.marvel.com:443/v1/public/") 
 });
 
-builder.Services.AddScoped<MarvelApi>();
+var publicKey = builder.Configuration.GetValue<string>("MarvelAPIKey");
+var privateKey = builder.Configuration.GetValue<string>("MarvelAPIPrivateKey");
+
+builder.Services.AddScoped<MarvelApiService>(m=>new MarvelApiService(privateKey, publicKey));
+
+builder.Services.AddServerSideBlazor().AddHubOptions(o =>
+{
+    o.MaximumReceiveMessageSize = 2000000;
+});
+
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 builder.Services.AddCascadingAuthenticationState();

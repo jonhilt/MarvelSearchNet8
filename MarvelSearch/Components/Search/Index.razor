@@ -1,6 +1,6 @@
 ﻿@page "/Search"
-@using MarvelSearch.Backend
-@inject MarvelApi MarvelApi
+@using FluentMarvelSdk
+@inject MarvelApiService MarvelApi
 @attribute [StreamRendering]
 
 <PageTitle>Home</PageTitle>
@@ -16,29 +16,29 @@
     {
         <p>Please enter a search term to begin...</p>
     }
-    else if (_results == null)
+    else if (apiResponse?.Results == null)
     {
-        <p>Loading...</p>
+        <p class="text-gray-900">Loading...</p>
     }
     else
     {
-        @foreach (var result in _results.Data.Results)
+        @foreach (var result in apiResponse.Results.ToList())
         {
-            <SearchResult Result="result" @rendermode="@RenderMode.InteractiveServer"/>
+            <SearchResult Result="@result" @rendermode="@RenderMode.InteractiveServer"/>
         }
     }
 
 </div>
 
 @code {
-    private MarvelSearchResult? _results;
+    private DataContainer<Character>? apiResponse;
 
     [SupplyParameterFromQuery]
     public string SearchTerm { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        _results = await MarvelApi.Search(SearchTerm);
+        apiResponse = await MarvelApi.GetCharacters().WithNameStartingWith(SearchTerm).Excelsior(); 
     }
 
 }
