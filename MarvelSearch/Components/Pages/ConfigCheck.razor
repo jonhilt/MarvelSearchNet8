@@ -3,7 +3,7 @@
 
 @{
     var apiKey = Configuration.GetValue<string>("MarvelAPIKey");
-    var privateApiKey = Configuration.GetValue<string>("MarvelAPIPrivateKey1");
+    var privateApiKey = Configuration.GetValue<string>("MarvelAPIPrivateKey");
 }
 
 @if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(privateApiKey))

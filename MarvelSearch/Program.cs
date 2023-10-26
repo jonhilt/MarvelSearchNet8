@@ -16,10 +16,6 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddScoped(sp => new HttpClient { 
-    BaseAddress = new Uri("https://gateway.marvel.com:443/v1/public/") 
-});
-
 var publicKey = builder.Configuration.GetValue<string>("MarvelAPIKey");
 var privateKey = builder.Configuration.GetValue<string>("MarvelAPIPrivateKey");
 
