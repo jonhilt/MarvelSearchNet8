@@ -1,10 +1,45 @@
 ﻿@page "/character/{id:int}"
+@attribute [StreamRendering]
+@using MarvelSharp
+@using MarvelSharp.Model
+@inject ApiService MarvelApi
 
-<h3>Details @Id</h3>
+@if (_character == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Details @Id</h3>
+    <h3>@_character.Name</h3>
+    <p>@_character.Description</p>
+
+    <img src="@(_character.Thumbnail.Path + "." + _character.Thumbnail.Extension)"/>
+
+    <section>
+        <h3>Comics</h3>
+        <ol>
+            @foreach (var comic in _character.Comics.Items)
+            {
+                <li class="p-1">
+                    @comic.Name
+                </li>
+            }
+        </ol>
+    </section>
+}
+
 
 @code {
-    
+    private Character? _character;
+
     [Parameter]
     public int Id { get; set; }
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        var characterResult = await MarvelApi.GetCharacterByIdAsync(Id);
+        _character = characterResult.Data.Result;
+    }
+
 }

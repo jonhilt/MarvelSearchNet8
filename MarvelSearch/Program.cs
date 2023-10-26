@@ -1,4 +1,3 @@
-using FluentMarvelSdk;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -7,6 +6,7 @@ using MarvelSearch.Client.Pages;
 using MarvelSearch.Components;
 using MarvelSearch.Data;
 using MarvelSearch.Identity;
+using MarvelSharp;
 using Tailwind;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +19,7 @@ builder.Services.AddRazorComponents()
 var publicKey = builder.Configuration.GetValue<string>("MarvelAPIKey");
 var privateKey = builder.Configuration.GetValue<string>("MarvelAPIPrivateKey");
 
-builder.Services.AddScoped<MarvelApiService>(m=>new MarvelApiService(privateKey, publicKey));
+builder.Services.AddScoped<ApiService>(m=>new ApiService(publicKey, privateKey));
 
 builder.Services.AddServerSideBlazor().AddHubOptions(o =>
 {

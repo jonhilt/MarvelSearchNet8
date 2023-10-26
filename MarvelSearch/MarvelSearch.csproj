@@ -14,35 +14,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MarvelSharp" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Tailwind.Extensions.AspNetCore" Version="1.1.0-beta1" />
-    <ProjectReference Include="..\FluentMarvel\FluentMarvelSdk.csproj" />
+ 
     <ProjectReference Include="..\MarvelSearch.Client\MarvelSearch.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.2.23480.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-rc.2.23480.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\Search\Index.razor" />
-    <_ContentIncludedByDefault Remove="Components\Search\SearchResult.razor" />
-    <_ContentIncludedByDefault Remove="Components\Favourites\Index.razor" />
-    <_ContentIncludedByDefault Remove="Components\Pages\Favourites\Index.razor" />
-    <_ContentIncludedByDefault Remove="Components\Search\Details.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="Components\Pages\Favourites\Index.razor" />
-    <AdditionalFiles Include="Components\Pages\Search\Details.razor" />
-    <AdditionalFiles Include="Components\Pages\Search\Index.razor" />
-    <AdditionalFiles Include="Components\Pages\Search\SearchResult.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Components\Favourites\Index.razor" />
   </ItemGroup>
 
 </Project>
