@@ -12,25 +12,25 @@
     <button type="submit" class="mt-2 p-2 bg-indigo-400 text-white rounded-md font-semibold">Search Characters</button>
 </form>
 
-<div class="grid grid-cols-4 gap-6">
 
-    @if (string.IsNullOrEmpty(SearchTerm))
-    {
-        <p>Please enter a search term to begin...</p>
-    }
-    else if (_apiResponse?.Data.Result == null)
-    {
-        <p class="text-gray-900">Loading...</p>
-    }
-    else
-    {
+@if (string.IsNullOrEmpty(SearchTerm))
+{
+    <p>Please enter a search term to begin...</p>
+}
+else if (_apiResponse?.Data.Result == null)
+{
+    <p class="text-gray-900">Loading...</p>
+}
+else
+{
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         @foreach (var result in _apiResponse.Data.Result)
         {
             <SearchResult Result="result" @rendermode="@RenderMode.InteractiveServer"/>
         }
-    }
+    </div>
+}
 
-</div>
 @code {
     private Response<List<Character>>? _apiResponse;
 

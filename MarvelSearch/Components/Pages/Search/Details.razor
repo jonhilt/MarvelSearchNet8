@@ -10,11 +10,18 @@
 }
 else
 {
-    <h3>Details @Id</h3>
-    <h3>@_character.Name</h3>
-    <p>@_character.Description</p>
-
-    <img src="@(_character.Thumbnail.Path + "." + _character.Thumbnail.Extension)"/>
+    <section class="bg-indigo-700 text-white p-4 flex flex-col md:flex-row">
+        <section>
+            <h3 class="text-2xl font-medium my-4">@_character.Name</h3>
+            <p class="mb-4">@_character.Description</p>
+        </section>
+        <section class="flex-grow">
+            <Thumbnail Path="@_character.Thumbnail.Path" 
+                       Extension="@_character.Thumbnail.Extension"
+                       class="h-80 object-cover" />
+        </section>
+       
+    </section>
 
     <section>
         <h3>Comics</h3>
