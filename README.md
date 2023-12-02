@@ -1,5 +1,7 @@
 # Net 8 Marvel Workshop
 
+**The code for part 2 of the workshop can be found in the Tailwind branch.**
+
 ## Launching the project
 Run the MarvelSearch project.
 
